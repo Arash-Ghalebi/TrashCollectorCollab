@@ -49,3 +49,19 @@ def create(request):
         return HttpResponseRedirect(reverse('employee:index'))
     else:
         return render(request, 'employee/create.html')
+    
+@login_required
+def my_pickups(request):
+    logged_in_employee = request.employee
+    logged_in_employee = Employee.objects.get(employee=logged_in_user)
+    if request.method == "POST":
+        date_from_form = request.POST.get('date')
+        
+        # logged_in_customer.one_time_pickup = date_from_form
+        logged_in_employee.save()
+        return HttpResponseRedirect(reverse('customers:index'))
+    else:
+        context = {
+            'logged_in_employee': logged_in_employee
+        }
+        return render(request, 'employees/my_pickups.html', context)
