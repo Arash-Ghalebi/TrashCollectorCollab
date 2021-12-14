@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
 
-from .models import Customer, Employee
+from .models import Employee
 
 # Create your views here.
 
@@ -15,7 +15,7 @@ from .models import Customer, Employee
 
 def index(request):
     # This line will get the Customer model from the other app, it can now be used to query the db for Customers
-    Employee = apps.get_model('employee.Employee')
+    Employee = apps.get_model('employees.Employee')
     return render(request, 'employees/index.html')
 
 @login_required
