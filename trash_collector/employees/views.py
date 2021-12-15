@@ -80,6 +80,9 @@ def edit_profile(request):
 # logged_in_user = request.user
 
 
+def add_charge(customer):
+    customer.balance += 20
+    
 # @login_required
 # def edit_profile(request):
 #     logged_in_user = request.user
