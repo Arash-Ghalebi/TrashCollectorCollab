@@ -2,15 +2,6 @@
 
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
 
-<nav class="navbar navbar-default">
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="">Home</a></li>
-      <li><a href="create.html">Create</a></li>
-      <li><a href="edit_profile.html">Products</a></li>
-      <li><a href="delete.html">Products</a></li>
-    </ul>
-</nav>
-
 {% block content %}
   {% if user.is_authenticated %}
     Hello Employee {{ user.username }}!
