@@ -30,7 +30,7 @@ def index(request):
         logged_in_employee = Employee.objects.get(user=logged_in_user)
         customer_zip = Customer.objects.filter(zip_code=logged_in_employee.zip_code) 
         daily_pickups = customer_zip.filter(weekly_pickup=week_string) | customer_zip.filter(one_time_pickup=today)
-        not_suspended = daily_pickups.exclude(suspend_start__lte=today, suspend_end__gte=today)
+        not_suspended = daily_pickups.exclude(suspend_start__lte=today, suspend_end__gte=today) #| daily_pickups.exclude(suspend_start=NULL)
         final_list = not_suspended.exclude(date_of_last_pickup=today)
         
         today = date.today()
@@ -45,10 +45,6 @@ def index(request):
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))
-    # DICTIONARY:
-        #return 
-            # All pickup addresses in zip
-            # Do not show suspended Accounts 
     
 @login_required
 def create(request):
