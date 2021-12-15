@@ -5,10 +5,11 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
+import datetime
+
 
 from .models import Employee 
-from .models import Customer
-from .models import Account 
+# from .models import Customer
 
 # Create your views here.
 
@@ -20,20 +21,24 @@ def index(request):
     Employee = apps.get_model('employees.Employee')
     logged_in_user = request.user 
     Customer = apps.get_model('customers.Customer')
-    today = date.today
+    week_days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    today = date.today()
+    week_num = datetime.date.today().weekday()
+    week_string = week_days[week_num]
     try:
         # This line will return the customer record of the logged-in user if one exists
         logged_in_employee = Employee.objects.get(user=logged_in_user)
         customer_zip = Customer.objects.filter(zip_code=logged_in_employee.zip_code) 
-        daily_pickups = Customer.ojects.filter() 
+        daily_pickups = customer_zip.filter(weekly_pickup=week_string) | customer_zip.filter(one_time_pickup=today)
+        not_suspended = daily_pickups.exclude(suspend_start__lte=today, suspend_end__gte=today)
+        final_list = not_suspended.exclude(date_of_last_pickup=today)
         
         today = date.today()
         
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
-            'customer_zip' : customer_zip,
-            'daily_pickups' : daily_pickups, 
+            'final_list' : final_list,
             
         }
 
