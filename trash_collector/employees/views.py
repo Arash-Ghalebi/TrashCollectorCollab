@@ -6,7 +6,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
 
-from .models import Employee
+from .models import Employee 
+from .models import Customer
+from .models import Account 
 
 # Create your views here.
 
@@ -16,21 +18,33 @@ from .models import Employee
 def index(request):
     # This line will get the Customer model from the other app, it can now be used to query the db for Customers
     Employee = apps.get_model('employees.Employee')
-    logged_in_user = request.user
-    # return render(request, 'employees/index.html')
+    logged_in_user = request.user 
+    Customer = apps.get_model('customers.Customer')
+    today = date.today
     try:
         # This line will return the customer record of the logged-in user if one exists
         logged_in_employee = Employee.objects.get(user=logged_in_user)
-
+        customer_zip = Customer.objects.filter(zip_code=logged_in_employee.zip_code) 
+        daily_pickups = Customer.ojects.filter() 
+        
         today = date.today()
         
         context = {
             'logged_in_employee': logged_in_employee,
-            'today': today
+            'today': today,
+            'customer_zip' : customer_zip,
+            'daily_pickups' : daily_pickups, 
+            
         }
+
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))
+    # DICTIONARY:
+        #return 
+            # All pickup addresses in zip
+            # Do not show suspended Accounts 
+    
 @login_required
 def create(request):
     logged_in_user = request.user
