@@ -8,6 +8,6 @@ app_name = "employees"
 urlpatterns = [
     path('', views.index, name="index"),
     path('new/', views.create, name="create"),
-    path('edit/', views.edit_profile, name="edit"),
-    path('one_time/', views.my_pickups, name="my_pickups"),
+    # path('edit/', views.edit_profile, name="edit"),
+    # path('one_time/', views.my_pickups, name="my_pickups"),
 ]
