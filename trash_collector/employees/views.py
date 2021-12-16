@@ -86,6 +86,7 @@ def add_charge(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
     customer.balance += 20
     customer.save()
+    print("successful pickup")
     return HttpResponseRedirect(reverse('employees:charged'))
 
 def pick_day(request, customer_id):
@@ -118,6 +119,6 @@ def weekly_pickup(request):
     print(day_of_week)
     customers = Customer.objects.filter(weekly_pickup=day_of_week)
     context = {
-        'final_customers': customers,
+        'final_list': customers,
     }
-    return render(request, 'employees/index.html', context)
+    return render(request, 'employees/select_day.html', context)

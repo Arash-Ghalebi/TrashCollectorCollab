@@ -4,14 +4,26 @@
 
 {% block content %}
   {% if user.is_authenticated %}
- 
+  <form action="{% url 'employees:weekly_pickup' %}" method='post'>
+
+    {% csrf_token %}
+  <select name='weekly_pickup'>
+    <option value='Monday'>Monday</option>
+    <option value='Tuesday'>Tuesday</option>
+    <option value='Wednesday'>Wednesday</option>
+    <option value='Thursday'>Thursday</option>
+    <option value='Friday'>Friday</option>
+    <option value='Saturday'>Saturday</option>
+    <option value='Sunday'>Sunday</option>
+  </select>
+  <button type='submit'>Pick Day</button>
+    </form>
     Hello {{ logged_in_employee.name }}!<br />
     Address: {{ logged_in_employee.address }} {{logged_in_employee.zip_code }}<br /><br>
     {% for item in final_list %}
       <tr>
           <td>Customer Name: {{item.name}}</td> <td>Address: {{item.address}}</td> 
-          <td>Zip Code: {{item.zip_code}}</td><a class = 'btn btn-danger'  href="{% url 'employees:add_charge' item.id %}">
-            Click me</a><br><br>
+          <td>Zip Code: {{item.zip_code}}</td>
       </tr>
     {% endfor %}
   {% else %}
@@ -22,4 +34,4 @@
   <br>
   {% endif %}
 
-{% endblock %} 
+{% endblock %}
