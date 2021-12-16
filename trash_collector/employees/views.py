@@ -80,9 +80,12 @@ def edit_profile(request):
 # logged_in_user = request.user
 
 
-def add_charge(customer):
+def add_charge(request, customer_id):
+    Customer = apps.get_model('customers.Customer')
+    customer = Customer.objects.get(id=customer_id)
     customer.balance += 20
-    return(customer.balance)
+    customer.save()
+    return HttpResponseRedirect(reverse('employees:index'))
     
 # @login_required
 # def edit_profile(request):

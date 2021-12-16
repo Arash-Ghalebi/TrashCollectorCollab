@@ -10,4 +10,5 @@ urlpatterns = [
     path('new/', views.create, name="create"),
     # path('edit/', views.edit_profile, name="edit"),
     # path('one_time/', views.my_pickups, name="my_pickups"),
+    path('add_charge/<int:customer_id>/', views.add_charge, name = "add_charge"),
 ]
