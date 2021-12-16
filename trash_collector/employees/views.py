@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
 import datetime
+import calendar
 
 
 from .models import Employee 
@@ -106,31 +107,22 @@ def add_charge(request, customer_id):
 #         }
 #         return render(request, 'employees/edit_profile.html', context)
 
-# @login_required
-# def create(request):
-#     logged_in_user = request.user
-#     if request.method == "POST":
-#         name_from_form = request.POST.get('name')
-#         address_from_form = request.POST.get('address')
-#         zip_from_form = request.POST.get('zip_code')
-#         new_employee = Employee(name=name_from_form, user=logged_in_user, address=address_from_form, zip_code=zip_from_form)
-#         new_employee.save()
-#         return HttpResponseRedirect(reverse('employee:index'))
-#     else:
-#         return render(request, 'employee/create.html')
-    
-# @login_required
-# def my_pickups(request):
-#     logged_in_employee = request.employee
-#     logged_in_employee = Employee.objects.get(employee=logged_in_user)
-#     if request.method == "POST":
-#         date_from_form = request.POST.get('date')
-        
-#         # logged_in_customer.one_time_pickup = date_from_form
-#         logged_in_employee.save()
-#         return HttpResponseRedirect(reverse('customers:index'))
-#     else:
-#         context = {
-#             'logged_in_employee': logged_in_employee
-#         }
-#         return render(request, 'employees/my_pickups.html', context)
+def weekly_pickup(request):
+    logged_in_user = request.user
+    logged_in_employee = Employee.objects.get(user=logged_in_user)
+    Customer = apps.get_model('customers.Customer')
+    my_date = date.today()
+    day = calendar.day_name[my_date.weekday()]
+    customers_by_weekly_pickup = Customer.objects.filter(weekly_pickup=day) #This filters through the above list and only saves the customers whose pickup day is today
+    active_accounts = customers_by_weekly_pickup.exclude(suspend_start__lte=my_date, suspend_end__gt=my_date)#This will take out any customer whose pick up is today and their account is suspended
+    final_customers = active_accounts.exclude(date_of_last_pickup=my_date)# This will exclude anyone whos trash pickup has been confirmed.
+    day_of_week = request.POST.get("weekly_pickup")
+    print(day_of_week)
+    customers = Customer.objects.filter(weekly_pickup=day_of_week) & Customer.objects.filter(zip_code__contains=logged_in_employee.zip_code)
+    context = {
+        'logged_in_employee': logged_in_employee,
+        'my_date': my_date,
+        'final_customers': final_customers,
+        'final_customers': customers,
+    }
+    return render(request, 'employees/index.html', context)
