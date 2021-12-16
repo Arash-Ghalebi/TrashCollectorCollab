@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Charge Confirmation {% endblock %}
+
+{% block header %} Pickup Confirmation {% endblock %}
+
+{% block content %}
+
+<form action="{% url 'employees:index' %}" method="post">
+    
+    <input type="submit" value="Confirm">
+</form>
+
+{% endblock %}

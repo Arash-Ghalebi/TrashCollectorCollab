@@ -85,7 +85,7 @@ def add_charge(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
     customer.balance += 20
     customer.save()
-    return HttpResponseRedirect(reverse('employees:index'))
+    return HttpResponseRedirect(reverse('employees:charged'))
     
 # @login_required
 # def edit_profile(request):
