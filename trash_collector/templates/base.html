@@ -10,7 +10,10 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Trash Collector</a>
     <div class="navbar-nav">
-    {% block navbar %}{% endblock %}
+    {% block navbar %}
+    <a class="nav-item nav-link" href="{% url 'employees:weekly_pickup' %}">Select Day</a>
+    <a class="nav-item nav-link" href="{% url 'employees:edit_profile' %}">Edit Profile</a>
+    {% endblock %}
     <a class="nav-item nav-link" href="{% url 'logout' %}">Log Out</a>
     </div>
   </nav>

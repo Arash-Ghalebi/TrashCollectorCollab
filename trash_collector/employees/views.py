@@ -60,27 +60,6 @@ def create(request):
     else:
         return render(request, 'employees/create.html')
 
-@login_required
-def edit_profile(request):
-    logged_in_user = request.user
-    try:
-        # This line will return the customer record of the logged-in user if one exists
-        logged_in_employee = Employee.objects.get(user=logged_in_user)
-
-        today = date.today()
-        
-        context = {
-            'logged_in_employee': logged_in_employee,
-            'today': today
-        }
-        return render(request, 'employees/index.html', context)
-    except ObjectDoesNotExist:
-        return HttpResponseRedirect(reverse('employees:create'))
-    # return render(request, 'employees/index.html')    
-# Employee = apps.get_model('employees.Employee')
-# logged_in_user = request.user
-
-
 def add_charge(request, customer_id):
     Customer = apps.get_model('customers.Customer')
     customer = Customer.objects.get(id=customer_id)
@@ -94,29 +73,28 @@ def pick_day(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
     
 
-# @login_required
-# def edit_profile(request):
-#     logged_in_user = request.user
-#     logged_in_employee = Employee.objects.get(user=logged_in_user)
-#     if request.method == "POST":
-#         name_from_form = request.POST.get('name')
-#         address_from_form = request.POST.get('address')
-#         zip_from_form = request.POST.get('zip_code')
-#         logged_in_employee.name = name_from_form
-#         logged_in_employee.address = address_from_form
-#         logged_in_employee.zip_code = zip_from_form
-#         logged_in_employee.save()
-#         return HttpResponseRedirect(reverse('employees:index'))
-#     else:
-#         context = {
-#             'logged_in_employee': logged_in_employee
-#         }
-#         return render(request, 'employees/edit_profile.html', context)
+@login_required
+def edit_profile(request):
+    logged_in_user = request.user
+    logged_in_employee = Employee.objects.get(user=logged_in_user)
+    if request.method == "POST":
+        name_from_form = request.POST.get('name')
+        address_from_form = request.POST.get('address')
+        zip_from_form = request.POST.get('zip_code')
+        logged_in_employee.name = name_from_form
+        logged_in_employee.address = address_from_form
+        logged_in_employee.zip_code = zip_from_form
+        logged_in_employee.save()
+        return HttpResponseRedirect(reverse('employees:index'))
+    else:
+        context = {
+            'logged_in_employee': logged_in_employee
+        }
+        return render(request, 'employees/edit_profile.html', context)
 
 def weekly_pickup(request):
     Customer = apps.get_model('customers.Customer')
-    day_of_week = request.POST.get("weekly_pickup") #This filters through the above list and only saves the customers whose pickup day is today
-    print(day_of_week)
+    day_of_week = request.POST.get("weekly_pickup")
     customers = Customer.objects.filter(weekly_pickup=day_of_week)
     context = {
         'final_list': customers,
