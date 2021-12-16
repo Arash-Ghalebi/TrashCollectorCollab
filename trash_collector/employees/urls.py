@@ -11,5 +11,6 @@ urlpatterns = [
     # path('edit/', views.edit_profile, name="edit"),
     # path('one_time/', views.my_pickups, name="my_pickups"),
     path('add_charge/<int:customer_id>/', views.add_charge, name = "add_charge"),
-    path('weekly_pickup/', views.weekly_pickup, name='weekly_pickup')
+    path('weekly_pickup/', views.weekly_pickup, name="weekly_pickup"),   
+    
 ]

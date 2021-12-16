@@ -22,7 +22,9 @@
     Address: {{ logged_in_employee.address }} {{logged_in_employee.zip_code }}<br /><br>
     {% for item in final_list %}
       <tr>
-          <td>Customer Name: {{item.name}}</td> <td>Address: {{item.address}}</td> <td>Zip Code: {{item.zip_code}}</td><a class = 'btn btn-danger'  href="{% url 'employees:add_charge' item.id%}">Click me</a><br><br>
+          <td>Customer Name: {{item.name}}</td> <td>Address: {{item.address}}</td> 
+          <td>Zip Code: {{item.zip_code}}</td><a class = 'btn btn-danger'  href="{% url 'employees:add_charge' item.id %}">
+            Click me</a><br><br>
       </tr>
     {% endfor %}
   {% else %}

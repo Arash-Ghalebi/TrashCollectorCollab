@@ -87,7 +87,12 @@ def add_charge(request, customer_id):
     customer.balance += 20
     customer.save()
     return HttpResponseRedirect(reverse('employees:charged'))
+
+def pick_day(request, customer_id):
+    Customer = apps.get_model('customers.Customer')
+    customer = Customer.objects.get(id=customer_id)
     
+
 # @login_required
 # def edit_profile(request):
 #     logged_in_user = request.user
@@ -108,21 +113,11 @@ def add_charge(request, customer_id):
 #         return render(request, 'employees/edit_profile.html', context)
 
 def weekly_pickup(request):
-    logged_in_user = request.user
-    logged_in_employee = Employee.objects.get(user=logged_in_user)
     Customer = apps.get_model('customers.Customer')
-    my_date = date.today()
-    day = calendar.day_name[my_date.weekday()]
-    customers_by_weekly_pickup = Customer.objects.filter(weekly_pickup=day) #This filters through the above list and only saves the customers whose pickup day is today
-    active_accounts = customers_by_weekly_pickup.exclude(suspend_start__lte=my_date, suspend_end__gt=my_date)#This will take out any customer whose pick up is today and their account is suspended
-    final_customers = active_accounts.exclude(date_of_last_pickup=my_date)# This will exclude anyone whos trash pickup has been confirmed.
-    day_of_week = request.POST.get("weekly_pickup")
+    day_of_week = request.POST.get("weekly_pickup") #This filters through the above list and only saves the customers whose pickup day is today
     print(day_of_week)
-    customers = Customer.objects.filter(weekly_pickup=day_of_week) & Customer.objects.filter(zip_code__contains=logged_in_employee.zip_code)
+    customers = Customer.objects.filter(weekly_pickup=day_of_week)
     context = {
-        'logged_in_employee': logged_in_employee,
-        'my_date': my_date,
-        'final_customers': final_customers,
         'final_customers': customers,
     }
     return render(request, 'employees/index.html', context)
