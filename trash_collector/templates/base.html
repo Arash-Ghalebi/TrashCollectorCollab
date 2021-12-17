@@ -11,19 +11,18 @@
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #25b1da;">
 
     <a class="navbar-brand" >Trash Collector</a>
-    <div class="navbar-nav">
+      <div class="navbar-nav">
     {% block navbar %} 
-    <div class="d-flex justify-content-center">
       <a class="nav-item nav-link" href="{% url 'employees:index' %}">Home</a>
       <a class="nav-item nav-link" href="{% url 'employees:weekly_pickup' %}">Select Day</a>
       <a class="nav-item nav-link" href="{% url 'employees:edit_profile' %}">Edit Profile</a>
-    </div>  
     {% endblock %} 
     <a class="nav-item nav-link" href="{% url 'logout' %}">Log Out</a>
     </div>
   </nav>
   {% endif %}
     <main>
+      <br> <br>
       <center><img src="{% static 'images/image.png' %}" alt = "trash cat"></center>
       <div class="container">
         <div class="row">
