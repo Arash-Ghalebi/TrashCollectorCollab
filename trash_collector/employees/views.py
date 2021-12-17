@@ -64,9 +64,10 @@ def add_charge(request, customer_id):
     Customer = apps.get_model('customers.Customer')
     customer = Customer.objects.get(id=customer_id)
     customer.balance += 20
+    customer.date_of_last_pickup = date.today()
     customer.save()
     print("successful pickup")
-    return HttpResponseRedirect(reverse('employees:charged'))
+    return HttpResponseRedirect(reverse('employees:index'))
 
 def pick_day(request, customer_id):
     Customer = apps.get_model('customers.Customer')
