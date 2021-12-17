@@ -8,14 +8,18 @@
 </head>
   <body class = "bg-info">
   {% if user.is_authenticated %}
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg" 
+  style="background-color: #1ECBe1;">
+
     <a class="navbar-brand" >Trash Collector</a>
     <div class="navbar-nav">
-    {% block navbar %}
-    <a class="nav-item nav-link" href="{% url 'employees:index' %}">Home</a>
-    <a class="nav-item nav-link" href="{% url 'employees:weekly_pickup' %}">Select Day</a>
-    <a class="nav-item nav-link" href="{% url 'employees:edit_profile' %}">Edit Profile</a>
-    {% endblock %}
+    {% block navbar %} 
+    <div class="d-flex justify-content-center">
+      <a class="nav-item nav-link" href="{% url 'employees:index' %}">Home</a>
+      <a class="nav-item nav-link" href="{% url 'employees:weekly_pickup' %}">Select Day</a>
+      <a class="nav-item nav-link" href="{% url 'employees:edit_profile' %}">Edit Profile</a>
+    </div>  
+    {% endblock %} 
     <a class="nav-item nav-link" href="{% url 'logout' %}">Log Out</a>
     </div>
   </nav>
